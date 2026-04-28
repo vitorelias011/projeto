@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo do Número Secreto</title>
+    <style>
+        /* Estilização rápida para o site ficar bonito */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #1a1a2e;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #16213e;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 { color: #00d2ff; }
+
+        input {
+            padding: 10px;
+            width: 60px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #00d2ff;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover { background-color: #3a7bd5; color: white; }
+
+        #mensagem {
+            margin-top: 1.5rem;
+            font-weight: bold;
+            min-height: 1.5em;
+        }
+
+        .reset-btn {
+            background-color: #e94560;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Número Secreto</h1>
+        <p>Tente adivinhar o número entre 1 e 100:</p>
+        
+        <input type="number" id="chute" min="1" max="100">
+        <br>
+        <button onclick="verificarChute()">Dar palpite</button>
+        <button id="btnReiniciar" class="reset-btn" onclick="reiniciarJogo()">Jogar novamente</button>
+
+        <p id="mensagem"></p>
+    </div>
+
+    <script>
+        // Lógica do Jogo
+        let numeroSecreto = Math.floor(Math.random() * 100) + 1;
+        let tentativas = 0;
+
+        function verificarChute() {
+            const inputChute = document.getElementById('chute');
+            const mensagem = document.getElementById('mensagem');
+            const btnReiniciar = document.getElementById('btnReiniciar');
+            const chute = Number(inputChute.value);
+
+            if (!chute || chute < 1 || chute > 100) {
+                mensagem.innerText = "Por favor, digite um número entre 1 e 100.";
+                return;
+            }
+
+            tentativas++;
+
+            if (chute === numeroSecreto) {
+                mensagem.innerHTML = `🎉 Parabéns! Você acertou em ${tentativas} tentativas!`;
+                mensagem.style.color = "#4ef037";
+                btnReiniciar.style.display = "inline-block";
+            } else if (chute > numeroSecreto) {
+                mensagem.innerText = "Muito alto! Tente um número menor.";
+                mensagem.style.color = "#ff4d4d";
+            } else {
+                mensagem.innerText = "Muito baixo! Tente um número maior.";
+                mensagem.style.color = "#ff4d4d";
+            }
+
+            inputChute.value = "";
+            inputChute.focus();
+        }
+
+        function reiniciarJogo() {
+            numeroSecreto = Math.floor(Math.random() * 100) + 1;
+            tentativas = 0;
+            document.getElementById('mensagem').innerText = "";
+            document.getElementById('btnReiniciar').style.display = "none";
+            document.getElementById('chute').value = "";
+        }
+    </script>
+</body>
+</html>
